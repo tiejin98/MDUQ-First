@@ -1,5 +1,9 @@
 # MD-UQ
-This repo uses python to generate and process the data and uses matlab to run tensor decomposition. <!-- Delete many repeated code, might cause bug. -->
+This repo uses python to generate and process the data and uses matlab to run tensor decomposition. 
+<details>
+  <summary>Todo</summary>
+  **Delete many repeated code, might cause bug.**
+</details>
 
 ## Simple Requirement
 Python: Transformers, Pytorch.
