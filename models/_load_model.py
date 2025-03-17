@@ -19,9 +19,10 @@ def _load_pretrained_model(model_name, device="cuda:0", torch_dtype=torch.float1
         model = OPTForCausalLM.from_pretrained(model_name, torch_dtype=torch_dtype)
     elif model_name == "microsoft/deberta-large-mnli":
         model = AutoModelForSequenceClassification.from_pretrained("microsoft/deberta-large-mnli")#, torch_dtype=torch_dtype)
-    elif model_name == 'llama-7b-hf' or model_name == 'llama-13b-hf':
-        #model = AutoModelForCausalLM.from_pretrained(os.path.join(LLAMA_PATH, model_name), cache_dir=None, torch_dtype=torch_dtype)
+    elif model_name == 'llama-7b-hf':
         model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf", torch_dtype=torch_dtype,token=Access)
+    elif model_name == 'llama-13b-hf':
+        model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-13b-chat-hf", torch_dtype=torch_dtype,token=Access)
     elif model_name == 'roberta-large-mnli':
         model = AutoModelForSequenceClassification.from_pretrained("roberta-large-mnli")#, torch_dtype=torch_dtype)
     elif model_name == "Phi3":
