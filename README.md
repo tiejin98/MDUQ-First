@@ -1,10 +1,12 @@
 # MD-UQ
 This repo uses python to generate and process the data and uses matlab to run tensor decomposition. 
-<span style="background-color: black; color: black;" onmouseover="this.style.color='white'" onmouseout="this.style.color='black'">
-  Delete many repeated code, might cause bug.
-</span>
+<details>
+  <summary>Todo</summary>
+  **Delete many repeated code, might cause bug.**
+</details>
+
 ## Simple Requirement
-Python: Transformers, Pytorch.
+Python: Transformers, Pytorch, vllm.
 Matlab: tensor_toolbox. 
 Others: Ollama
 
@@ -23,5 +25,13 @@ More parameters can be found in the code.
 
 After semantic generation, it will output a ```0.pkl```, which contains all the semantic generations. After that, run ```extract_claims.py``` (ollama required), and the extracted claim will be saved to a ```0_claim.txt``` file. And then run ```getting_claim_pkl.py``` to get the pickle file of knowledge generation. Please change the path in the code.
 
-## Tensor Decomposition
+## Accuracy Evaluation of Generation
+
+Run ```correctness_qwen.py``` to get ```accuracy.pkl```, which is used to evaluate the uncetainty in the end. In the ```correctness_qwen.py```, users are also required to change the path of 0.pkl to the real path to semantic generation.
+
+## Getting Similarity Matrix
+First run ```sim_mat.py```  and then run ```transfer_matrix.py``` to get file for Matleb.
+
+## Tensor Decomposition, Uncertainty Measures and Evaluation
+Run ```cp_decom.m``` and ```tucker_decom.m``` to get the results of tensor decomposition with Matlab. Then, running ```get_matlab_res.py``` and ```inter_unq_ensemble.py``` to get the final uncertianty measures. Note that sometimes, you may need to use Matlab to transfer the ```cp_decom.m``` and ```tucker_decom.m``` to version7 of .mat. Finally, evaluate the uncertainty using ```evaluation.py```
 
