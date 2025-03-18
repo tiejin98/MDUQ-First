@@ -1,4 +1,4 @@
-# MD-UQ
+# MDUQ-First
 This repo uses python to generate and process the data and uses matlab to run tensor decomposition. 
 <details>
   <summary>Todo</summary>
