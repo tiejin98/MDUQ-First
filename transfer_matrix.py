@@ -76,31 +76,46 @@ def compute_normalized_laplacian(similarity_matrix):
 
 
 res = {}
+res_dis = {}
 seman = np.load("seman_simmat.npy",allow_pickle=True).item()
 
 for key in tqdm(seman.keys()):
     sim_mat = c[key]['sim_mat_renew']
     sim_mat = torch.nn.functional.softmax(sim_mat,dim=2)
-    sim_mat = sim_mat[:,:,2].numpy()
+    sim_mat_agree = sim_mat[:,:,2].numpy()
+    sim_mat_disagree = 1-sim_mat[:,:,0].numpy()
     for i in range(20):
-        sim_mat[i,i] = 1
-    res[key] = sim_mat
+        sim_mat_agree[i,i] = 1
+        sim_mat_disagree[i,i] = 1
+    res[key] = sim_mat_agree
+    res_dis[key] = sim_mat_disagree
+    
 
 with open('seman_simmat.pkl', 'wb') as file:
     pickle.dump(res, file)
 
+with open('seman_simmat_disagree.pkl', 'wb') as file:
+    pickle.dump(res_dis, file)
+
 
 res = {}
+res_dis = {}
 seman = np.load("knowledge_simmat.npy",allow_pickle=True).item()
 
 for key in tqdm(seman.keys()):
     sim_mat = c[key]['sim_mat_renew']
     sim_mat = torch.nn.functional.softmax(sim_mat,dim=2)
-    sim_mat = sim_mat[:,:,2].numpy()
+    sim_mat_agree = sim_mat[:,:,2].numpy()
+    sim_mat_disagree = 1-sim_mat[:,:,0].numpy()
     for i in range(20):
-        sim_mat[i,i] = 1
-    res[key] = sim_mat
+        sim_mat_agree[i,i] = 1
+        sim_mat_disagree[i,i] = 1
+    res[key] = sim_mat_agree
+    res_dis[key] = sim_mat_disagree
+    
 
 with open('knowledge_simmat.pkl', 'wb') as file:
     pickle.dump(res, file)
 
+with open('knowledge_simmat_disagree.pkl', 'wb') as file:
+    pickle.dump(res_dis, file)

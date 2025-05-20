@@ -45,25 +45,32 @@ io = py.importlib.import_module('io');
 emd_module = py.importlib.import_module('pyemd');
 
 
-% Load the pickle files using Python's io module
-
-
 seman_file_path = 'semantic_simmat.pkl';
 know_file_path = 'knowledge_simmat.pkl';
 
+% Extra pickle files (new matrices)
+seman_file_path_extra = 'semantic_simmat_disagree.pkl';
+know_file_path_extra = 'knowledge_simmat_disagree.pkl';
 seman_file = io.open(seman_file_path, 'rb');
 know_file = io.open(know_file_path, 'rb');
-
 seman = pickle.load(seman_file);
 know = pickle.load(know_file);
-
-% Close the files
 seman_file.close();
 know_file.close();
 
-% Convert Python dict_keys to a list and then to a MATLAB cell array
+seman_file_extra = io.open(seman_file_path_extra, 'rb');
+know_file_extra = io.open(know_file_path_extra, 'rb');
+seman_extra = pickle.load(seman_file_extra);
+know_extra = pickle.load(know_file_extra);
+seman_file_extra.close();
+know_file_extra.close();
+
+
 seman_keys = cellfun(@char, cell(py.list(seman.keys())), 'UniformOutput', false);
-know_keys = cellfun(@char, cell(py.list(know.keys())), 'UniformOutput', false);
+know_keys   = cellfun(@char, cell(py.list(know.keys())), 'UniformOutput', false);
+seman_extra_keys = cellfun(@char, cell(py.list(seman_extra.keys())), 'UniformOutput', false);
+know_extra_keys  = cellfun(@char, cell(py.list(know_extra.keys())), 'UniformOutput', false);
+
 
 % Initialize an empty structure to store the final results
 final = containers.Map();
@@ -90,8 +97,8 @@ end
 keys = final.keys;  % Get all the keys (as a cell array)
 num_keys = length(keys);  % Get the number of keys
 
-recon_res = containers.Map;
-recon_random = containers.Map;
+keys_list = {};
+values_list = {};
 res = containers.Map;
 total = 0;
 
@@ -101,10 +108,10 @@ random_matrix = randn(shape); % Random matrix is generated once outside the loop
 random_matrix = tensor(random_matrix);
 h = waitbar(0, 'Processing...');
 tic;
-total_iterations = min(2000, num_keys) * length(1:20);  % Total number of iterations for both loops
+total_iterations = min(1000, num_keys) * length(1:20);  % Total number of iterations for both loops
 current_iteration = 0;
 normR = norm(random_matrix);
-for k = 1:min(2000, num_keys)
+for k = 1:min(1000, num_keys)
     key = keys{k};
     final_matrix = final(key);  % Access containers.Map using parentheses
     final_matrix = tensor(final_matrix);
@@ -136,16 +143,18 @@ for k = 1:min(2000, num_keys)
         % Update the progress bar with estimated remaining time
         waitbar(current_iteration / total_iterations, h, ...
             sprintf('Processing key %d of %d, time remaining: %s', ...
-            k, min(2000, num_keys), estimated_time_str));
+            k, min(1000, num_keys), estimated_time_str));
     end
     
     % Store the reconstruction results
-    recon_res(key) = recon_key;
-    recon_random(key) = recon_random_key;
+    recon_keys{k}        = key;              
+    recon_values{k}      = recon_key;   
     
     total = total + 1;
-    waitbar(k / min(2000, num_keys), h);
+    waitbar(k / min(1000, num_keys), h);
 end
 
-save('results_tucker.mat', 'recon_res', 'recon_random');
+recon_res  = [recon_keys; recon_values];
+
+save('results_tucker.mat', 'recon_res', '-v7');
 

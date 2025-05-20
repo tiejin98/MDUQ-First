@@ -2,10 +2,8 @@
 This repo uses python to generate and process the data and uses matlab to run tensor decomposition. 
 <details>
   <summary>Todo</summary>
-  
   - Delete many repeated code, might cause bug.
-  
-  - Improve code quality.
+  - Improve Code Quality
 </details>
 
 ## Simple Requirement
@@ -36,5 +34,5 @@ Run ```correctness_qwen.py``` to get ```accuracy.pkl```, which is used to evalua
 First run ```sim_mat.py```  and then run ```transfer_matrix.py``` to get file for Matleb.
 
 ## Tensor Decomposition, Uncertainty Measures and Evaluation
-Run ```cp_decom.m``` and ```tucker_decom.m``` to get the results of tensor decomposition with Matlab. Then, running ```get_matlab_res.py``` and ```inter_unq_ensemble.py``` to get the final uncertianty measures. Note that sometimes, you may need to use Matlab to transfer the ```cp_decom.m``` and ```tucker_decom.m``` to version7 of .mat. Finally, evaluate the uncertainty using ```evaluation.py```
+Run ```cp_decom.m``` and ```tucker_decom.m``` to get the results of tensor decomposition with Matlab. Then, running ```get_matlab_res.py``` and ```inter_unq_ensemble.py``` to get the final uncertianty measures. Finally, evaluate the uncertainty using ```evaluation.py```
 
